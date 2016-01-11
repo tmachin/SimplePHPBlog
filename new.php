@@ -1,6 +1,6 @@
 <?php
 require('objects.php');
-//require('configure.php');
+require('database.php');
 session_start();
 
 if(isset($_SESSION['loggedIn']) && isset($_POST['title'])) {

@@ -40,4 +40,36 @@ class Post
 
 }
 
+class User
+{
+    private $id = 0;
+    private $email = '';
+    //private $password = '';
+    private $userimage = '';
+    private $fname = '';
+    private $lname = '';
+    private $admin = false;
+
+    public function __construct($userData) {
+
+        $this->id = $userData['id'];
+        $this->email = $userData['email'];
+        //$this->password = $userPassword;
+        $this->userimage = $userData['image_name'];
+        $this->fname = $userData['f_name'];
+        $this->lname = $userData['l_name'];
+        $this->admin = $userData['admin'];
+    }
+    public function display(){
+        echo 'User:' . $this->id . ' -- ' . $this->fname . ' ' . $this->lname. ' <br/>';
+        echo 'email:' . $this->email . '<br/>';
+        //echo 'password: ' . $this->password;
+        echo '<img src="img/'.$this->userimage.'" alt="Userimage"/><br/>';
+        echo 'Admin Status:' . $this->admin . '<br/>';
+    }
+
+
+
+}
+
  ?>

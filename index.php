@@ -27,14 +27,35 @@ session_start();
 </head>
 <body>
 <?php
+
+//if user is logged in, load their userdata
 if(isset($_SESSION['loggedIn'])){
     echo 'logged in <br>';
     $loggedIn = true;
-} else {
+    $user = new User($_SESSION['userData']);
+    $user->display();
+} else { //if not logged in, show create new user form
     echo 'not logged in <br>';
     $loggedIn = false;
+    ?>
+    <form enctype="multipart/form-data" action="create.php" method="POST">
+  <fieldset>
+    <label>Email address: <input type="text" name="email" placeholder="yourname@website.com"></input></label>
+    <br/>
+    <label>Password: <input type="password" name="password" placeholder="password"></input></label>
+    <br/>
+    <label>Profile picture: <input type="file" name="userimage"></input></label>
+    <br/>
+    <label>First name: <input type="text" name="fname" placeholder="First name"></input></label>
+    <br/>
+    <label>Last name: <input type="text" name="lname" placeholder="Last name"></input></label>
+    <br/>
+    <input type="submit" value="Submit" />
+  </fieldset>
+</form>
+<?php
 }
-
+//Show all posts in DB
 require('database.php');
 $query = "SELECT CONCAT(f_name, ' ', l_name) AS name,
                     title,
@@ -43,7 +64,6 @@ $query = "SELECT CONCAT(f_name, ' ', l_name) AS name,
                      posts.id
                  FROM posts JOIN users ON posts.author_ID = users.id
                  ORDER BY post_time DESC";
-
 try {
     $results = $db->query($query);
 } catch (Exception $e){
@@ -57,16 +77,23 @@ foreach ($posts as $post) {
 }
 
 
-    //option to add new post
 if (isset($_POST['email'])) {
     echo 'log in attempt';
     //log in if username is good
-    $_SESSION['loggedIn'] = true;
+    $user = login($db,$_POST['email'], $_POST['password']);
+    if ($user !== false) {
+        $_SESSION['userData'] = $user;
+        $_SESSION['loggedIn'] = true;
+    } else {
+        echo 'Login attempt failed';
+    }
+
 } else {
     //display log in form
     ?>
     <form action="" method="POST">
         <input type="text" name="email" placeholder="email"/>
+        <input type="password" name="password" placeholder="password"/>
         <input type="submit" value="submit"/>
     </form>
     <?php
