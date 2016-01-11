@@ -1,10 +1,10 @@
 <?php
 /*
-* Some sort of blog like thing. Grab posts from DB, grab Author, display them together WEB 2.0!
-*
+* Some sort of blog like thing. Grab posts from DB, grab Author, display them together
+* @Author: Thomas Machin
 */
 require('objects.php');
-//require('configure.php');
+
 
 
 session_start();
@@ -45,40 +45,13 @@ if(isset($_SESSION['loggedIn'])){
         exit();
     }
     $posts = $results->fetchAll(PDO::FETCH_ASSOC);
+
     echo '<ul>';
     foreach ($posts as $post) {
-        echo '<li class="post"><h2><a href="posts.php?id='. $post['id'] .'">' .$post['title'] . '</a></h2> ' ;
-        echo $post['name'] . " -- " . date('l jS \of F Y h:i:s A',$post['post_time']) . ' ';
-        echo '<p>' . $post['text'] . '</p>';
-        echo '<a href="edit.php?id='.$post['id'].'">Edit post </a>';
-        echo '<a href="delete.php?id='.$post['id'].'">Delete post </a></li>';
+        $post_object= new Post($post['id'],$post['title'],$post['name'],$post['text'],$post['post_time']);
+        $post_object->display();
     }
     echo '</ul>';
-    // //show posts
-    // //$link = connectDB();
-    // //$mysqli = new mysqli($DBhost, $DBusername, $DBpassword, $DBname);
-    //
-    // /* check connection */
-    // if ($mysqli->connect_errno) {
-    //     printf("Connect failed: %s\n", $mysqli->connect_error);
-    //     exit();
-    // }
-    // $query = "SELECT CONCAT(f_name, ' ', l_name) AS name,
-    //                 title,
-    //                  post_time,
-    //                  text
-    //              FROM posts JOIN users ON posts.author_ID = users.id
-    //              ORDER BY post_time DESC";
-    // if ($result = $mysqli->query($query)) {
-    //     printf("Select returned %d rows.\n", $result->num_rows);
-    //
-    //
-    //     while($row = $result->fetch_array(MYSQLI_ASSOC)) {
-    //         $post = new Post($row['title'],$row['name'],$row['text'],$row['post_time']);
-    //         $post->display();
-    //     }
-    //     $result->close();
-    // }
     echo "<a href='new.php'>Create new post</a>";
 
 

@@ -1,6 +1,6 @@
 <?php
 require('objects.php');
-//require('configure.php');
+
 
 
 session_start();
@@ -27,13 +27,36 @@ if(isset($_SESSION['loggedIn'])){
             exit();
         }
         $post = $results->fetch(PDO::FETCH_ASSOC);
-        if ($post !== false){
+        if (!empty($_GET['mode'])){
+            $mode = $_GET['mode'];
+        } else {
+            $mode ='read';
+        }
+
+        if ($post !== false && $mode === 'read'){
+            echo '<ul>';
+            echo '<h2><a href="posts.php?id='. $post['id'] .'">' .$post['title'] . '</a></h2> ' ;
+            echo $post['name'] . " -- " . date('l jS \of F Y h:i:s A',$post['post_time']) . ' ';
+            echo '<p>' . $post['text'] . '</p>';
+            echo '</ul>';
+            print_r($post);
+        } else if ($post !== false && $mode === 'edit') {
+
+            echo '<form action="update.php?id='.$post['id'].'" method="POST">';
+            echo 'test';
+            echo '<label>Title:<input type="text" name="title" value="'.$post['title'].'"/></label> ' ;
+            echo $post['name'] . " -- " . date('l jS \of F Y h:i:s A',$post['post_time']) . ' <br>';
+            echo '<label>Post Contents:<textarea name="text">'.$post['text'].'</textarea></label>';
+            echo '<button value="submit">Submit</button>';
+        } else if ($post !== false && $mode === 'delete') {
+            echo ' Delete this post? <br/>';
+            echo '<a href="delete.php?id='. $post['id'] .'">Yes!</a>';
+            echo '<hr>';
             echo '<ul>';
             echo '<h2><a href="posts.php?id='. $post['id'] .'">' .$post['title'] . '</a></h2> ' ;
             echo $post['post_time'] . ' ';
             echo '<p>' . $post['text'] . '</p>';
             echo '</ul>';
-            print_r($post);
         } else {
             echo 'Post does not exist';
             exit();
