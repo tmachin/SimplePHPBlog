@@ -4,6 +4,33 @@ require('objects.php');
 
 
 session_start();
+?>
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Simple test blog</title>
+  <meta name="description" content="A very simple blog">
+  <meta name="author" content="Thomas Machin">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+<?php
+if(isset($_SESSION['loggedIn'])){
+    echo 'logged in <br>';
+    $loggedIn = true;
+} else {
+    echo 'not logged in <br>';
+    $loggedIn = false;
+}
+
 if(isset($_SESSION['loggedIn'])){
     echo 'logged in <br>';
     require('database.php');
@@ -27,36 +54,27 @@ if(isset($_SESSION['loggedIn'])){
             exit();
         }
         $post = $results->fetch(PDO::FETCH_ASSOC);
-        if (!empty($_GET['mode'])){
-            $mode = $_GET['mode'];
+        if (!empty($_GET['action'])){
+            $action = $_GET['action'];
         } else {
-            $mode ='read';
+            $action ='read';
         }
 
-        if ($post !== false && $mode === 'read'){
-            echo '<ul>';
-            echo '<h2><a href="posts.php?id='. $post['id'] .'">' .$post['title'] . '</a></h2> ' ;
-            echo $post['name'] . " -- " . date('l jS \of F Y h:i:s A',$post['post_time']) . ' ';
-            echo '<p>' . $post['text'] . '</p>';
-            echo '</ul>';
-            print_r($post);
-        } else if ($post !== false && $mode === 'edit') {
+        if ($post !== false && $action === 'read'){
+            $post_object= new Post($post['id'],$post['title'],$post['name'],$post['text'],$post['post_time']);
+            $post_object->display($loggedIn);
 
-            echo '<form action="update.php?id='.$post['id'].'" method="POST">';
-            echo 'test';
-            echo '<label>Title:<input type="text" name="title" value="'.$post['title'].'"/></label> ' ;
-            echo $post['name'] . " -- " . date('l jS \of F Y h:i:s A',$post['post_time']) . ' <br>';
-            echo '<label>Post Contents:<textarea name="text">'.$post['text'].'</textarea></label>';
-            echo '<button value="submit">Submit</button>';
-        } else if ($post !== false && $mode === 'delete') {
+        } else if ($post !== false && $action === 'edit') {
+            $post_object= new Post($post['id'],$post['title'],$post['name'],$post['text'],$post['post_time']);
+            $post_object->displayEditable();
+
+        } else if ($post !== false && $action === 'delete') {
             echo ' Delete this post? <br/>';
             echo '<a href="delete.php?id='. $post['id'] .'">Yes!</a>';
-            echo '<hr>';
-            echo '<ul>';
-            echo '<h2><a href="posts.php?id='. $post['id'] .'">' .$post['title'] . '</a></h2> ' ;
-            echo $post['post_time'] . ' ';
-            echo '<p>' . $post['text'] . '</p>';
-            echo '</ul>';
+
+            $post_object= new Post($post['id'],$post['title'],$post['name'],$post['text'],$post['post_time']);
+            $post_object->display($loggedIn);
+
         } else {
             echo 'Post does not exist';
             exit();

@@ -29,8 +29,14 @@ session_start();
 <?php
 if(isset($_SESSION['loggedIn'])){
     echo 'logged in <br>';
-    require('database.php');
-    $query = "SELECT CONCAT(f_name, ' ', l_name) AS name,
+    $loggedIn = true;
+} else {
+    echo 'not logged in <br>';
+    $loggedIn = false;
+}
+
+require('database.php');
+$query = "SELECT CONCAT(f_name, ' ', l_name) AS name,
                     title,
                      post_time,
                      text,
@@ -38,25 +44,21 @@ if(isset($_SESSION['loggedIn'])){
                  FROM posts JOIN users ON posts.author_ID = users.id
                  ORDER BY post_time DESC";
 
-    try {
-        $results = $db->query($query);
-    } catch (Exception $e){
-        echo $e->getMessage();
-        exit();
-    }
-    $posts = $results->fetchAll(PDO::FETCH_ASSOC);
-
-    echo '<ul>';
-    foreach ($posts as $post) {
+try {
+    $results = $db->query($query);
+} catch (Exception $e){
+    echo $e->getMessage();
+    exit();
+}
+$posts = $results->fetchAll(PDO::FETCH_ASSOC);
+foreach ($posts as $post) {
         $post_object= new Post($post['id'],$post['title'],$post['name'],$post['text'],$post['post_time']);
-        $post_object->display();
-    }
-    echo '</ul>';
-    echo "<a href='new.php'>Create new post</a>";
+        $post_object->display($loggedIn);
+}
 
 
     //option to add new post
-} elseif ($_POST['email']) {
+if (isset($_POST['email'])) {
     echo 'log in attempt';
     //log in if username is good
     $_SESSION['loggedIn'] = true;
@@ -68,7 +70,11 @@ if(isset($_SESSION['loggedIn'])){
         <input type="submit" value="submit"/>
     </form>
     <?php
+
 }
+echo "<a href='new.php'>Create new post</a>";
+echo '<br>';
+echo "<a href='logout.php'>Log out</a>";
 ?>
 </body>
 </html>

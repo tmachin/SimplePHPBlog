@@ -6,13 +6,27 @@ body {
 .post {
     width:50%;
     margin: 1em auto;
-    padding: 1em;
-    border: 1px solid black;
+    /*padding: 1em;
+    border: 1px solid black;*/
     border-radius: 20px;
     list-style: none;
     background: white;
 }
-
-.post h2{
-    margin: 0.2em;
+.post header {
+    margin: 0;
+    padding:0.5em;
+    background: rgb(86, 191, 219);
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+}
+.post h1 {
+    margin: 0;
+}
+.post h1 a{
+    font-size: 1.5rem;
+    font-variant: small-caps;
+    color: white;
+}
+.post footer, .post section {
+    padding: 1em;
 }

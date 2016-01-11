@@ -26,9 +26,7 @@ if(isset($_SESSION['loggedIn'])){
         } catch (Exception $e){
             echo $e->getMessage();
             exit();
-        }
-        //$post = $results->fetch(PDO::FETCH_ASSOC);
-
+        }        
 
     } else {
         echo 'No post id provided';
