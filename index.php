@@ -38,7 +38,7 @@ if(isset($_SESSION['loggedIn'])){
     echo 'not logged in <br>';
     $loggedIn = false;
     ?>
-    <form enctype="multipart/form-data" action="create.php" method="POST">
+    <form enctype="multipart/form-data" action="account.php?action=create" method="POST">
   <fieldset>
     <label>Email address: <input type="text" name="email" placeholder="yourname@website.com"></input></label>
     <br/>
