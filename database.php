@@ -15,19 +15,27 @@ try {
 function login($db,$email, $password){
     $query = "SELECT    id,
                         email,
+                        password,
                         f_name,
                         l_name,
                         image_name,
                         admin
             FROM users
-            WHERE email = :email AND password = :password";
+            WHERE email = :email";
 
     try {
-        //$results = $db->query($query);
+        
         $results = $db->prepare($query);
-        $results->execute(array(':email'=>$email, ':password'=>$password));
+        $results->execute(array(':email'=>$email));
         $user = $results->fetch(PDO::FETCH_ASSOC);
-        return $user;
+        if (password_verify($password, $user['password'])) {
+            unset($user['password']);
+            return $user;
+        } else {
+            echo 'Invalid password.';
+            return false;
+        }
+
     } catch (Exception $e){
         echo $e->getMessage();
         return false;

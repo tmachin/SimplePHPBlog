@@ -7,10 +7,11 @@ class Post
     private $text = '';
     private $date = '';
 
-    public function __construct($postId, $postTitle, $postAuthor, $postText, $postDate) {
+    public function __construct($postId, $postTitle, $postAuthor, $postAuthorID, $postText, $postDate) {
         $this->id = $postId;
         $this->title = $postTitle;
         $this->author = $postAuthor;
+        $this->authorID = $postAuthorID;
         $this->text = $postText;
         $this->date = date('l jS \of F Y h:i:s A',$postDate);
     }
@@ -19,7 +20,8 @@ class Post
         echo '<article class="post">
         <header><h1><a href="posts.php?id='. $this->id .'">' .$this->title . '</a></h1></header>' ;
         echo '<section>';
-        echo '<h5>'.$this->author . ' -- ' . $this->date .'</h5>';
+        //echo '<h5>'.$this->author . ' -- ' . $this->date .'</h5>';
+        echo '<h5><a href="users.php?id='.$this->authorID.'">'. $this->author . '</a> -- ' . $this->date .'</h5>';
         echo '<p>'. $this->text . '</p>';
         echo '</section>';
         echo '<footer>';
@@ -33,7 +35,7 @@ class Post
     public function displayEditable() {
         echo '<form action="update.php?id='.$this->id.'" method="POST" class="post edit">';
         echo '<label>Title:<input type="text" name="title" value="'.$this->title.'"/></label> ' ;
-        echo $this->author . ' -- ' . $this->date .'<br>';
+        echo '<a href="users.php?id='.$this->authorID.'">'. $this->author . '</a> -- ' . $this->date .'<br>';
         echo '<label>Post Contents:<textarea name="text" rows="4" cols="50">'.$this->text.'</textarea></label>';
         echo '<button value="submit">Submit</button>';
     }

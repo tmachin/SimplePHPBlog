@@ -62,7 +62,8 @@ $query = "SELECT CONCAT(f_name, ' ', l_name) AS name,
                     title,
                      post_time,
                      text,
-                     posts.id
+                     posts.id as postID,
+                     users.id as userID
                  FROM posts JOIN users ON posts.author_ID = users.id
                  ORDER BY post_time DESC";
 try {
@@ -73,7 +74,8 @@ try {
 }
 $posts = $results->fetchAll(PDO::FETCH_ASSOC);
 foreach ($posts as $post) {
-        $post_object= new Post($post['id'],$post['title'],$post['name'],$post['text'],$post['post_time']);
+        //var_dump($post);
+        $post_object= new Post($post['postID'],$post['title'],$post['name'], $post['userID'],$post['text'],$post['post_time']);
         $post_object->display($loggedIn);
 }
 

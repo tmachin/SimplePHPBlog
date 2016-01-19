@@ -16,7 +16,7 @@ function createUser($user,$userImage){
     try {
         $results = $db->prepare($query);
         $results->execute(array(':email'=>$user['email'] ,
-        ':password'=>$user['password'] ,
+        ':password'=>password_hash($user['password'], PASSWORD_DEFAULT),
         ':fName'=>$user['fname'],
         ':lName'=>$user['lname'],
         ':imageName'=>$user['userimage'],
