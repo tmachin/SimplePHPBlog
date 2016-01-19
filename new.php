@@ -5,12 +5,11 @@ session_start();
 
 if(isset($_SESSION['loggedIn']) && isset($_POST['title'])) {
 
-    require('database.php');
-    $query = 'INSERT INTO posts VALUES (null, :posttime , :posttitle , :posttext,1 ) ';
+    $query = 'INSERT INTO posts VALUES (null, :posttime , :posttitle , :posttext,:userID ) ';
 
     try {
         $results = $db->prepare($query);
-        $results->execute(array(':posttime'=> time(), ':posttitle'=>$_POST['title'], ':posttext'=>$_POST['text']));
+        $results->execute(array(':posttime'=> time(), ':posttitle'=>$_POST['title'], ':posttext'=>$_POST['text'], ':userID'=>intval($_SESSION['userData']['id'])));
         header("Location: index.php");
         exit();
     } catch (Exception $e){

@@ -31,8 +31,8 @@ if(isset($_SESSION['loggedIn'])){
     $loggedIn = false;
 }
 
-if(isset($_SESSION['loggedIn'])){
-    echo 'logged in <br>';
+//if(isset($_SESSION['loggedIn'])){
+    
     require('database.php');
     if (!empty($_GET['id'])){
         $postId = intval($_GET['id']);
@@ -85,18 +85,4 @@ if(isset($_SESSION['loggedIn'])){
         exit();
     }
 
-    //option to add new post
-} elseif ($_POST['email']) {
-    echo 'log in attempt';
-    //log in if username is good
-    $_SESSION['loggedIn'] = true;
-} else {
-    //display log in form
-    ?>
-    <form action="" method="POST">
-        <input type="text" name="email" placeholder="email"/>
-        <input type="submit" value="submit"/>
-    </form>
-    <?php
-}
 ?>
