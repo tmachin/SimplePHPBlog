@@ -63,11 +63,14 @@ class User
         $this->admin = $userData['admin'];
     }
     public function display(){
+        echo '<div class="userinfo">';
         echo 'User:' . $this->id . ' -- ' . $this->fname . ' ' . $this->lname. ' <br/>';
         echo 'email:' . $this->email . '<br/>';
         //echo 'password: ' . $this->password;
         echo '<img src="img/'.$this->userimage.'" alt="Userimage"/><br/>';
         echo 'Admin Status:' . $this->admin . '<br/>';
+        echo '</div>';
+
     }
 
 

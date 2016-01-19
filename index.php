@@ -4,9 +4,6 @@
 * @Author: Thomas Machin
 */
 require('objects.php');
-
-
-
 session_start();
 
 ?>
@@ -39,21 +36,23 @@ if(isset($_SESSION['loggedIn'])){
     echo 'not logged in <br>';
     $loggedIn = false;
     ?>
-    <form enctype="multipart/form-data" action="account.php?action=create" method="POST">
-  <fieldset>
-    <label>Email address: <input type="text" name="email" placeholder="yourname@website.com"></input></label>
-    <br/>
-    <label>Password: <input type="password" name="password" placeholder="password"></input></label>
-    <br/>
-    <label>Profile picture: <input type="file" name="userimage"></input></label>
-    <br/>
-    <label>First name: <input type="text" name="fname" placeholder="First name"></input></label>
-    <br/>
-    <label>Last name: <input type="text" name="lname" placeholder="Last name"></input></label>
-    <br/>
-    <input type="submit" value="Submit" />
-  </fieldset>
-</form>
+    <div class="createuser">
+        <form enctype="multipart/form-data" action="account.php?action=create" method="POST">
+            <fieldset>
+                <label>Email address: <input type="text" name="email" placeholder="yourname@website.com"></input></label>
+                <br/>
+                <label>Password: <input type="password" name="password" placeholder="password"></input></label>
+                <br/>
+                <label>Profile picture: <input type="file" name="userimage"></input></label>
+                <br/>
+                <label>First name: <input type="text" name="fname" placeholder="First name"></input></label>
+                <br/>
+                <label>Last name: <input type="text" name="lname" placeholder="Last name"></input></label>
+                <br/>
+                <input type="submit" value="Submit" />
+            </fieldset>
+        </form>
+    </div>
 <?php
 }
 //Show all posts in DB
@@ -91,14 +90,16 @@ if (isset($_POST['email'])) {
         echo 'Login attempt failed';
     }
 
-} else {
-    //display log in form
+} elseif (!isset($_SESSION['loggedIn'])) {
+    //display log in form if user is not logged in
     ?>
-    <form action="" method="POST">
-        <input type="text" name="email" placeholder="email"/>
-        <input type="password" name="password" placeholder="password"/>
-        <input type="submit" value="submit"/>
-    </form>
+    <div class="login">
+        <form action="" method="POST">
+            <input type="text" name="email" placeholder="email"/>
+            <input type="password" name="password" placeholder="password"/>
+            <input type="submit" value="submit"/>
+        </form>
+    </div>
     <?php
 
 }

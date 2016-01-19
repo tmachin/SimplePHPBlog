@@ -30,3 +30,8 @@ body {
 .post footer, .post section {
     padding: 1em;
 }
+
+.userinfo img {
+    max-width: 200px;
+    max-height: 200px;
+}

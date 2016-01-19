@@ -6,6 +6,7 @@
 *
 * @author: Thomas Machin
 */
+//TODO move functionality into posts.php
 require('objects.php');
 session_start();
 

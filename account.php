@@ -2,13 +2,17 @@
 require('objects.php');
 session_start();
 
+//create a new user if url specifies create action
 if ($_GET['action'] == 'create'){
-    // var_dump($_POST);
-    // var_dump($_FILES);
+    //get new user info from post
+    //TODO sanitize user information and make sure it is complete
+    //TODO check that email is valid
     $newUser = $_POST;
+    //add file info for user profile picture
     $newUser['userimage'] = $_FILES['userimage']['name'];
     createUser($newUser,$_FILES['userimage']);
 }
+
 function createUser($user,$userImage){
     require('database.php');
     $query = 'INSERT INTO users VALUES (null, :email , :password , :fName, :lName, :imageName, :admin) ';
@@ -22,21 +26,17 @@ function createUser($user,$userImage){
         ':imageName'=>$user['userimage'],
         ':admin'=>0));
 
-
     } catch (Exception $e){
         echo $e->getMessage();
         exit();
     }
-            //
-            // if (!file_exists('./profiles/')) {
-            //     mkdir('./profiles/', 0777, true);
-            // }
 
             $filename = "./img/" . $userImage['name'];
             move_uploaded_file($userImage['tmp_name'], $filename);
+            //once account is created, log the user in.
+            // this should log the user in and make user data accessible to other functions
+            //login the user by setting session loggedIn variable and userData
 
-            // login the user by storing the email address in the email session variable and setting
-            // the loggedin variable
             session_start();
             $user = login($db,$user['email'], $user['password']);
             if ($user !== false) {
@@ -45,9 +45,7 @@ function createUser($user,$userImage){
             } else {
                 echo 'Login attempt failed';
             }
-            // $_SESSION['loggedin'] = true;
-            // //$_SESSION['email'] = $user[0];
-            // $_SESSION['userData']
+
             header("Location: index.php");
             exit();
 

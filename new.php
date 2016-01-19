@@ -1,10 +1,11 @@
 <?php
+//TODO move functionality into posts.php
 require('objects.php');
 require('database.php');
 session_start();
 
 if(isset($_SESSION['loggedIn']) && isset($_POST['title'])) {
-
+    //TODO sanitize post fields before sending to DB
     $query = 'INSERT INTO posts VALUES (null, :posttime , :posttitle , :posttext,:userID ) ';
 
     try {
@@ -19,12 +20,16 @@ if(isset($_SESSION['loggedIn']) && isset($_POST['title'])) {
 
 } elseif(isset($_SESSION['loggedIn'])){
     ?>
+    <div class="newpost">
     <form action="" method="POST">
-        Title: <input type="text" name="title" placeholder="Post Title"/>
+        <label>Title:</label><br>
+        <input type="text" name="title" placeholder="Post Title"/>
         <br>
-        Post: <textarea type="text" name="text" placeholder="Post Body"> </textarea>
+        <label>Post:</label><br>
+        <textarea type="text" name="text" placeholder="Post Body" col="50" rows="20"> </textarea>
         <input type="submit" value="submit"/>
     </form>
+    </div>
     <?php
 } else {
         header("Location: index.php");
