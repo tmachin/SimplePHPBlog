@@ -16,6 +16,10 @@ class Post
         $this->date = date('l jS \of F Y h:i:s A',$postDate);
     }
 
+    public function getID(){
+        return $this->id;
+    }
+
     public function display($loggedIn) {
         echo '<article class="post">
         <header><h1><a href="posts.php?id='. $this->id .'">' .$this->title . '</a></h1></header>' ;
@@ -62,6 +66,19 @@ class User
         $this->lname = $userData['l_name'];
         $this->admin = $userData['admin'];
     }
+
+    public function getID(){
+        return $this->id;
+    }
+
+    public function isAdmin(){
+        if ($this->admin == 1){
+            return true;
+        } else {
+            return false;
+        }
+
+    }
     public function display(){
         echo '<div class="userinfo">';
         echo 'User:' . $this->id . ' -- ' . $this->fname . ' ' . $this->lname. ' <br/>';
@@ -73,6 +90,23 @@ class User
 
     }
 
+    public function displayEditable() {
+        echo '<div class="userinfo">';
+        // echo 'User:' . $this->id . ' -- ' . $this->fname . ' ' . $this->lname. ' <br/>';
+        // echo 'email:' . $this->email . '<br/>';
+        // //echo 'password: ' . $this->password;
+        // echo '<img src="img/'.$this->userimage.'" alt="Userimage"/><br/>';
+        // echo 'Admin Status:' . $this->admin . '<br/>';
+        // echo '</div>';
+
+        echo '<form action="user.php?id='.$this->id.'" method="POST" class="user edit">';
+        echo '<label>Name:<input type="text" name="title" value="'. $this->fname . ' ' . $this->lname. '"/></label> ' ;
+        echo 'email:' . $this->email . '<br/>';
+        echo '<img src="img/'.$this->userimage.'" alt="Userimage"/><br/>';
+        echo 'Admin Status:' . $this->admin . '<br/>';
+        echo '</div>';
+        echo '<button value="submit">Submit</button>';
+    }
 
 
 }

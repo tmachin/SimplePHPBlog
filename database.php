@@ -47,5 +47,28 @@ function login($db,$email, $password){
 
 
 }
+function loadUser($db,$id){
+    $query = "SELECT    id,
+                        email,
+                        password,
+                        f_name,
+                        l_name,
+                        image_name,
+                        admin
+            FROM users
+            WHERE id = :userid";
+
+    try {
+        $results = $db->prepare($query);
+        $results->execute(array(':userid'=>$id));
+        $user = $results->fetch(PDO::FETCH_ASSOC);
+        return $user;
+        
+
+    } catch (Exception $e){
+        echo $e->getMessage();
+        return false;
+    }
+}
 
 ?>

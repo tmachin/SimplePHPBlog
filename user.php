@@ -1,9 +1,15 @@
 <?php
 require('objects.php');
+require('database.php');
 session_start();
 
+if (!isset($_GET['action']) && isset($_GET['id'])){
+
+    $user = new User(loadUser($db,$_GET['id']));
+
+    $user->display();
+} elseif ($_GET['action'] == 'create'){
 //create a new user if url specifies create action
-if ($_GET['action'] == 'create'){
     //get new user info from post
     //TODO sanitize user information and make sure it is complete
     //TODO check that email is valid
@@ -11,10 +17,21 @@ if ($_GET['action'] == 'create'){
     //add file info for user profile picture
     $newUser['userimage'] = $_FILES['userimage']['name'];
     createUser($newUser,$_FILES['userimage']);
+} elseif ($_GET['action'] == 'edit'){
+
+    $user = new User($_SESSION['userData']);
+    echo $user->isAdmin();
+    if ($_GET['id'] == $user->getID()){
+        echo 'can edit this entry';
+        $user->displayEditable();
+    } else {
+        echo 'cannot edit this entry';
+        $user->display();
+    }
 }
 
 function createUser($user,$userImage){
-    require('database.php');
+
     $query = 'INSERT INTO users VALUES (null, :email , :password , :fName, :lName, :imageName, :admin) ';
 
     try {
@@ -51,3 +68,21 @@ function createUser($user,$userImage){
 
 
 }
+?>
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Simple test blog</title>
+  <meta name="description" content="A very simple blog">
+  <meta name="author" content="Thomas Machin">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
