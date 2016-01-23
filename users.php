@@ -6,8 +6,10 @@ session_start();
 if (!isset($_GET['action']) && isset($_GET['id'])){
 
     $user = new User(loadUser($db,$_GET['id']));
+    //$user->display();
+    $userHtml = $user->display();
 
-    $user->display();
+
 } elseif ($_GET['action'] == 'create'){
 //create a new user if url specifies create action
     //get new user info from post
@@ -20,14 +22,18 @@ if (!isset($_GET['action']) && isset($_GET['id'])){
 } elseif ($_GET['action'] == 'edit'){
 
     $user = new User($_SESSION['userData']);
+    $viewedUser = new User(loadUser($db,$_GET['id']));
     echo $user->isAdmin();
+    echo $user->getID();
     if ($_GET['id'] == $user->getID()){
         echo 'can edit this entry';
-        $user->displayEditable();
+        $userHtml = $viewedUser->displayEditable();
     } else {
         echo 'cannot edit this entry';
-        $user->display();
+        $userHtml = $viewedUser->display();
     }
+} elseif ($_GET['action'] == 'update'){
+
 }
 
 function createUser($user,$userImage){
@@ -86,3 +92,8 @@ function createUser($user,$userImage){
   <![endif]-->
 </head>
 <body>
+<?php
+echo $userHtml;
+ ?>
+</body>
+</html>

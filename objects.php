@@ -84,28 +84,24 @@ class User
         echo 'User:' . $this->id . ' -- ' . $this->fname . ' ' . $this->lname. ' <br/>';
         echo 'email:' . $this->email . '<br/>';
         //echo 'password: ' . $this->password;
-        echo '<img src="img/'.$this->userimage.'" alt="Userimage"/><br/>';
+        echo '<img src="img/'.$this->userimage.'" alt="'.$this->fname . ' ' . $this->lname.'"/><br/>';
         echo 'Admin Status:' . $this->admin . '<br/>';
         echo '</div>';
 
     }
 
     public function displayEditable() {
-        echo '<div class="userinfo">';
-        // echo 'User:' . $this->id . ' -- ' . $this->fname . ' ' . $this->lname. ' <br/>';
-        // echo 'email:' . $this->email . '<br/>';
-        // //echo 'password: ' . $this->password;
-        // echo '<img src="img/'.$this->userimage.'" alt="Userimage"/><br/>';
-        // echo 'Admin Status:' . $this->admin . '<br/>';
-        // echo '</div>';
+        $userHtml = '';
+        $userHtml .= '<div class="userinfo">';
 
-        echo '<form action="user.php?id='.$this->id.'" method="POST" class="user edit">';
-        echo '<label>Name:<input type="text" name="title" value="'. $this->fname . ' ' . $this->lname. '"/></label> ' ;
-        echo 'email:' . $this->email . '<br/>';
-        echo '<img src="img/'.$this->userimage.'" alt="Userimage"/><br/>';
-        echo 'Admin Status:' . $this->admin . '<br/>';
-        echo '</div>';
-        echo '<button value="submit">Submit</button>';
+        $userHtml .= '<form action="user.php?id='.$this->id.'&action=update" method="POST" class="user edit">';
+        $userHtml .= '<label>Name:<input type="text" name="title" value="'. $this->fname . ' ' . $this->lname. '"/></label> ' ;
+        $userHtml .= 'email:' . $this->email . '<br/>';
+        $userHtml .= '<img src="img/'.$this->userimage.'" alt="'.$this->fname . ' ' . $this->lname.'"/><br/>';
+        $userHtml .= 'Admin Status:' . $this->admin . '<br/>';
+        $userHtml .= '</div>';
+        $userHtml .= '<button value="submit">Submit</button>';
+        return $userHtml;
     }
 
 
