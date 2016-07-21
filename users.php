@@ -18,7 +18,7 @@ if (!isset($_GET['action']) && isset($_GET['id'])){
     $newUser = $_POST;
     //add file info for user profile picture
     $newUser['userimage'] = $_FILES['userimage']['name'];
-    createUser($newUser,$_FILES['userimage']);
+    createUser($newUser,$_FILES['userimage'],$db);
 } elseif ($_GET['action'] == 'edit'){
 
     $user = new User($_SESSION['userData']);
@@ -36,11 +36,12 @@ if (!isset($_GET['action']) && isset($_GET['id'])){
 
 }
 
-function createUser($user,$userImage){
+function createUser($user,$userImage,$db){
 
     $query = 'INSERT INTO users VALUES (null, :email , :password , :fName, :lName, :imageName, :admin) ';
 
     try {
+
         $results = $db->prepare($query);
         $results->execute(array(':email'=>$user['email'] ,
         ':password'=>password_hash($user['password'], PASSWORD_DEFAULT),

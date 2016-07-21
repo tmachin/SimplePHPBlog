@@ -32,7 +32,7 @@ if(isset($_SESSION['loggedIn'])){
 }
 
 //if(isset($_SESSION['loggedIn'])){
-    
+
     require('database.php');
     if (!empty($_GET['id'])){
         $postId = intval($_GET['id']);
@@ -40,7 +40,8 @@ if(isset($_SESSION['loggedIn'])){
                         title,
                          post_time,
                          text,
-                         posts.id
+                         posts.id,
+                         author_ID
                      FROM posts JOIN users ON posts.author_ID = users.id
                      WHERE posts.id = ?
                      ORDER BY post_time DESC";
@@ -61,18 +62,18 @@ if(isset($_SESSION['loggedIn'])){
         }
 
         if ($post !== false && $action === 'read'){
-            $post_object= new Post($post['id'],$post['title'],$post['name'],$post['text'],$post['post_time']);
+            $post_object= new Post($post['id'],$post['title'],$post['name'],$post['author_ID'],$post['text'],$post['post_time']);
             $post_object->display($loggedIn);
 
         } else if ($post !== false && $action === 'edit') {
-            $post_object= new Post($post['id'],$post['title'],$post['name'],$post['text'],$post['post_time']);
+            $post_object= new Post($post['id'],$post['title'],$post['name'],$post['author_ID'],$post['text'],$post['post_time']);
             $post_object->displayEditable();
 
         } else if ($post !== false && $action === 'delete') {
             echo ' Delete this post? <br/>';
             echo '<a href="delete.php?id='. $post['id'] .'">Yes!</a>';
 
-            $post_object= new Post($post['id'],$post['title'],$post['name'],$post['text'],$post['post_time']);
+            $post_object= new Post($post['id'],$post['title'],$post['name'],$post['author_ID'],$post['text'],$post['post_time']);
             $post_object->display($loggedIn);
 
         } else {
