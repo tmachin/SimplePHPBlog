@@ -102,10 +102,14 @@ if (isset($_POST['email'])) {
     </div>
     <?php
 
+} else {
+    echo "<div class='options'>";
+    echo "<a href='new.php'>Create new post</a>";
+    echo '<br>';
+    echo "<a href='logout.php'>Log out</a>";
+    echo "</div>";
 }
-echo "<a href='new.php'>Create new post</a>";
-echo '<br>';
-echo "<a href='logout.php'>Log out</a>";
+
 ?>
 </body>
 </html>
